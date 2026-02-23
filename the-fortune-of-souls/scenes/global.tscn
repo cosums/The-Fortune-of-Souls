@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dfxqrq1dvrnk0"]
+
+[ext_resource type="Script" uid="uid://c6qksd878n7il" path="res://scripts/ReputationTracker.cs" id="1_4pk28"]
+
+[node name="Global" type="Node" unique_id=1633946412]
+
+[node name="Reputation Tracker" type="Node" parent="." unique_id=1094890123]
+script = ExtResource("1_4pk28")

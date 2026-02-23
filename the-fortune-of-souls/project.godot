@@ -15,6 +15,10 @@ run/main_scene="uid://c77v00biwa2np"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Global="*uid://dfxqrq1dvrnk0"
+
 [dotnet]
 
 project/assembly_name="The Fortune of Souls"
