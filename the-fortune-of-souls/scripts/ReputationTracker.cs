@@ -3,7 +3,7 @@ using System;
 
 public partial class ReputationTracker : Node
 {
-    public ReputationTracker Instance;
+    public static ReputationTracker Instance;
 
     public int reputation { get; private set; }
 
@@ -22,10 +22,9 @@ public partial class ReputationTracker : Node
     /// Adds reputation equal to amount and invokes reptuation update.
     /// </summary>
     /// <param name="amount">positive or negative integer.</param>
-    public void AddReputation(int amount)
+    public void UpdateReputation(int amount)
     {
         reputation += amount;
     }
-
 
 }
