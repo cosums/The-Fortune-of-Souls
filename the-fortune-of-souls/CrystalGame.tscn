@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c77v00biwa2np"]
+
+[ext_resource type="Texture2D" uid="uid://c348j4e5atv48" path="res://art/programmer/crystalball/crystalball.png" id="1_s3lhw"]
+[ext_resource type="Script" uid="uid://nicgc1wt56dx" path="res://scripts/CrystalBall.cs" id="2_4xr0u"]
+
+[node name="CrystalGame" type="Node2D" unique_id=153489280]
+
+[node name="Background" type="Node2D" parent="." unique_id=1173848891]
+
+[node name="CrystalBall" type="Node2D" parent="." unique_id=2014253761]
+
+[node name="Crystalball" type="Sprite2D" parent="CrystalBall" unique_id=655351902]
+texture_filter = 1
+position = Vector2(576, 326)
+scale = Vector2(20, 20)
+texture = ExtResource("1_s3lhw")
+script = ExtResource("2_4xr0u")
