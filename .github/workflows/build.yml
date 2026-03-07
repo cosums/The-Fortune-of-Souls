@@ -5,7 +5,7 @@ on: push
 
 env:
   GODOT_VERSION: 4.6.1
-  EXPORT_NAME: test-project
+  EXPORT_NAME: TFoS
   PROJECT_PATH: the-fortune-of-souls
 
 jobs:

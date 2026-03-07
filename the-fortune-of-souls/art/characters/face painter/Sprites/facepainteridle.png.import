@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b5nps8ha5lafi"
-path="res://.godot/imported/facepainteridle.png-9fcb07be57a0ec2da9b2e3f466524ea5.ctex"
+path="res://.godot/imported/facepainteridle.png-89bf9bd21507f5e4d92ef0b8c68aa4e5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/characters/face painter/Sprites/facepainteridle.png"
-dest_files=["res://.godot/imported/facepainteridle.png-9fcb07be57a0ec2da9b2e3f466524ea5.ctex"]
+source_file="res://art/characters/face painter/sprites/facepainteridle.png"
+dest_files=["res://.godot/imported/facepainteridle.png-89bf9bd21507f5e4d92ef0b8c68aa4e5.ctex"]
 
 [params]
 

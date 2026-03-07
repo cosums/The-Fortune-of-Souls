@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://tcb63xfpnr82"
-path="res://.godot/imported/facepainterprofile_giggle.png-693adfd05bed6a457a59533b7842ab08.ctex"
+path="res://.godot/imported/facepainterprofile_giggle.png-8a5b733c2683abf0318903e3b9530d4c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/characters/face painter/Profile/facepainterprofile_giggle.png"
-dest_files=["res://.godot/imported/facepainterprofile_giggle.png-693adfd05bed6a457a59533b7842ab08.ctex"]
+source_file="res://art/characters/face painter/profile/facepainterprofile_giggle.png"
+dest_files=["res://.godot/imported/facepainterprofile_giggle.png-8a5b733c2683abf0318903e3b9530d4c.ctex"]
 
 [params]
 

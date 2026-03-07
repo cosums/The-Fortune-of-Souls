@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bgcm1b3ogp1kh"
-path="res://.godot/imported/fpwalk_spritesheet.png-e11de3df7b09a2a7b1bcb4a0ae633951.ctex"
+path="res://.godot/imported/fpwalk_spritesheet.png-8a750763aa9ce6f52736300017577681.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/characters/face painter/Sprites/walk cycles/sprite sheets/fpwalk_spritesheet.png"
-dest_files=["res://.godot/imported/fpwalk_spritesheet.png-e11de3df7b09a2a7b1bcb4a0ae633951.ctex"]
+source_file="res://art/characters/face painter/sprites/walk cycles/sprite sheets/fpwalk_spritesheet.png"
+dest_files=["res://.godot/imported/fpwalk_spritesheet.png-8a750763aa9ce6f52736300017577681.ctex"]
 
 [params]
 

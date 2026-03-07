@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dbt2cig4vfxqe"
-path="res://.godot/imported/TFoS_GrassTile_Horizontal.png-c4e1175245c57c1a4fab82574e43fb76.ctex"
+path="res://.godot/imported/TFoS_GrassTile_Horizontal.png-59c6a59f730153a70ed256f7f9ca5c94.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/map/Tileset/TFoS_GrassTile_Horizontal.png"
-dest_files=["res://.godot/imported/TFoS_GrassTile_Horizontal.png-c4e1175245c57c1a4fab82574e43fb76.ctex"]
+source_file="res://art/map/tileset/TFoS_GrassTile_Horizontal.png"
+dest_files=["res://.godot/imported/TFoS_GrassTile_Horizontal.png-59c6a59f730153a70ed256f7f9ca5c94.ctex"]
 
 [params]
 
