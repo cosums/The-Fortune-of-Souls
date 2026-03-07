@@ -14,6 +14,7 @@ on:
 
 env:
   GODOT_VERSION: 4.6.1
+  GODOT_PROJECT_DIR: the-fortune-of-souls
   EXPORT_NAME_LINUX: "Linux"
   EXPORT_NAME_WINDOWS: "Windows"
   EXPORT_NAME_MAC: "macOS"
@@ -48,13 +49,16 @@ jobs:
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
 
-      - name: Build Project
+      - name: Install Dependencies and Build
         run: |
+          apt-get update && apt-get install -y libfontconfig1 libdbus-1-3
+
           mkdir -p $(dirname ${{ matrix.output_path }})
-          if [ "${{ github.event.inputs.build_mode }}" == "debug" ]; then
-            godot --headless --export-debug "${{ matrix.preset }}" "${{ matrix.output_path }}"
+
+          if [ "${{ github.event.inputs.build_mode }}" = "debug" ]; then
+            godot --headless --path ${{ env.GODOT_PROJECT_DIR }} --export-debug "${{ matrix.preset }}" "${{ github.workspace }}/${{ matrix.output_path }}"
           else
-            godot --headless --export-release "${{ matrix.preset }}" "${{ matrix.output_path }}"
+            godot --headless --path ${{ env.GODOT_PROJECT_DIR }} --export-release "${{ matrix.preset }}" "${{ github.workspace }}/${{ matrix.output_path }}"
           fi
 
       - name: Upload Artifact
