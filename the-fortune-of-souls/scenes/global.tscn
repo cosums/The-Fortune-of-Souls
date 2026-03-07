@@ -2,13 +2,9 @@
 
 [ext_resource type="Script" uid="uid://c6qksd878n7il" path="res://scripts/ReputationTracker.cs" id="1_4pk28"]
 [ext_resource type="Script" uid="uid://c403wfk7qsvo7" path="res://scripts/core/Game.cs" id="1_nmxvb"]
-[ext_resource type="Script" uid="uid://c4c5lsrwy3opj" path="res://addons/dialogue_manager/DialogueManager.cs" id="3_opebo"]
 
 [node name="Game" type="Node" unique_id=1633946412]
 script = ExtResource("1_nmxvb")
 
 [node name="Reputation Tracker" type="Node" parent="." unique_id=1094890123]
 script = ExtResource("1_4pk28")
-
-[node name="Dialogue Manager" type="Node" parent="." unique_id=640910598]
-script = ExtResource("3_opebo")
