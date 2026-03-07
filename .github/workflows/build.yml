@@ -1,0 +1,64 @@
+name: Build All Platforms
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_mode:
+        description: 'Build Mode'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+env:
+  GODOT_VERSION: 4.6.1
+  EXPORT_NAME_LINUX: "Linux"
+  EXPORT_NAME_WINDOWS: "Windows"
+  EXPORT_NAME_MAC: "macOS"
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.6.1
+    
+    strategy:
+      matrix:
+        include:
+          - platform: linux
+            preset: "Linux"
+            output_path: "bin/linux/TFoS.x86_64"
+          - platform: windows
+            preset: "Windows"
+            output_path: "bin/windows/TFoS.exe"
+          - platform: mac
+            preset: "macOS"
+            output_path: "bin/mac/TFoS.zip"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Export Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+
+      - name: Build Project
+        run: |
+          mkdir -p $(dirname ${{ matrix.output_path }})
+          if [ "${{ github.event.inputs.build_mode }}" == "debug" ]; then
+            godot --headless --export-debug "${{ matrix.preset }}" "${{ matrix.output_path }}"
+          else
+            godot --headless --export-release "${{ matrix.preset }}" "${{ matrix.output_path }}"
+          fi
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TFoS-${{ matrix.platform }}-${{ github.event.inputs.build_mode }}
+          path: ${{ matrix.output_path }}
