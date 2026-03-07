@@ -54,15 +54,13 @@ jobs:
           apt-get update && apt-get install -y libfontconfig1 libdbus-1-3
 
           PROJECT_PATH="${{ github.workspace }}/${{ env.GODOT_PROJECT_DIR }}"
-          EXPORT_DIR="${{ github.workspace }}/$(dirname ${{ matrix.output_path }})"
-          EXPORT_PATH="${{ github.workspace }}/${{ matrix.output_path }}"
 
-          mkdir -p "$EXPORT_DIR"
+          mkdir -p "${{ github.workspace }}/$(dirname ${{ matrix.output_path }})"
 
           if [ "${{ github.event.inputs.build_mode }}" = "debug" ]; then
-            godot --headless --path "$PROJECT_PATH" --export-debug "${{ matrix.preset }}" "$EXPORT_PATH"
+            godot --headless --path "$PROJECT_PATH" --export-debug "${{ matrix.preset }}" "${{ github.workspace }}/${{ matrix.output_path }}"
           else
-            godot --headless --path "$PROJECT_PATH" --export-release "${{ matrix.preset }}" "$EXPORT_PATH"
+            godot --headless --path "$PROJECT_PATH" --export-release "${{ matrix.preset }}" "${{ github.workspace }}/${{ matrix.output_path }}"
           fi
 
       - name: Upload Artifact
