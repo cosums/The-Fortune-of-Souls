@@ -1,70 +1,124 @@
-name: Build All Platforms
+name: "godot-ci export"
+on: push
 
-on:
-  workflow_dispatch:
-    inputs:
-      build_mode:
-        description: 'Build Mode'
-        required: true
-        default: 'debug'
-        type: choice
-        options:
-          - debug
-          - release
+# NOTE: If your `project.godot` is at the repository root, set `PROJECT_PATH` below to ".".
 
 env:
   GODOT_VERSION: 4.6.1
-  GODOT_PROJECT_DIR: the-fortune-of-souls
-  EXPORT_NAME_LINUX: "Linux"
-  EXPORT_NAME_WINDOWS: "Windows"
-  EXPORT_NAME_MAC: "macOS"
+  EXPORT_NAME: test-project
+  PROJECT_PATH: the-fortune-of-souls
 
 jobs:
-  export:
-    runs-on: ubuntu-latest
+  export-windows:
+    name: Windows Export
+    runs-on: ubuntu-24.04  # Use 24.04 with godot 4
     container:
-      image: barichello/godot-ci:4.6.1
-    
-    strategy:
-      matrix:
-        include:
-          - platform: linux
-            preset: "Linux"
-            output_path: "bin/linux/TFoS.x86_64"
-          - platform: windows
-            preset: "Windows"
-            output_path: "bin/windows/TFoS.exe"
-          - platform: mac
-            preset: "macOS"
-            output_path: "bin/mac/TFoS.zip"
-
+      image: barichello/godot-ci:4.3
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-
-      - name: Setup Export Templates
+          lfs: true
+      - name: Setup
         run: |
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
-
-      - name: Install Dependencies and Build
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mkdir -v -p ~/.config/
+          mv /root/.config/godot ~/.config/godot
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      - name: Windows Build
         run: |
-          apt-get update && apt-get install -y libfontconfig1 libdbus-1-3
-
-          PROJECT_PATH="./${{ env.GODOT_PROJECT_DIR }}"
-
-          mkdir -p "$(dirname ${{ matrix.output_path }})"
-
-          if [ "${{ github.event.inputs.build_mode }}" = "debug" ]; then
-            godot --headless --path "$PROJECT_PATH" --export-debug "${{ matrix.preset }}" "${{ matrix.output_path }}"
-          else
-            godot --headless --path "$PROJECT_PATH" --export-release "${{ matrix.preset }}" "${{ matrix.output_path }}"
-          fi
-
+          mkdir -v -p build/windows
+          EXPORT_DIR="$(readlink -f build)"
+          cd $PROJECT_PATH
+          godot --headless --verbose --export-release "Windows Desktop" "$EXPORT_DIR/windows/$EXPORT_NAME.exe"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TFoS-${{ matrix.platform }}-${{ github.event.inputs.build_mode }}
-          path: ${{ matrix.output_path }}
+          name: windows
+          path: build/windows
+
+  export-linux:
+    name: Linux Export
+    runs-on: ubuntu-24.04  # Use 24.04 with godot 4
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      - name: Linux Build
+        run: |
+          mkdir -v -p build/linux
+          EXPORT_DIR="$(readlink -f build)"
+          cd $PROJECT_PATH
+          godot --headless --verbose --export-release "Linux/X11" "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: build/linux
+
+  export-web:
+    name: Web Export
+    runs-on: ubuntu-24.04  # Use 24.04 with godot 4
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      - name: Web Build
+        run: |
+          mkdir -v -p build/web
+          EXPORT_DIR="$(readlink -f build)"
+          cd $PROJECT_PATH
+          godot --headless --verbose --export-release "Web" "$EXPORT_DIR/web/index.html"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: build/web
+      - name: Install rsync 📚
+        run: |
+          apt-get update && apt-get install -y rsync
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build/web # The folder the action should deploy.
+
+  export-mac:
+    name: Mac Export
+    runs-on: ubuntu-24.04  # Use 24.04 with godot 4
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+      - name: Mac Build
+        run: |
+          mkdir -v -p build/mac
+          EXPORT_DIR="$(readlink -f build)"
+          cd $PROJECT_PATH
+          godot --headless --verbose --export-release "macOS" "$EXPORT_DIR/mac/$EXPORT_NAME.zip"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac
+          path: build/mac
