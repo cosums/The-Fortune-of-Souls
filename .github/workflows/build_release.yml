@@ -1,0 +1,182 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_mode:
+        description: 'Build Mode'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - debug
+          - release
+          - all
+
+env:
+  GODOT_VERSION: 4.6.1
+  GODOT_PROJECT_DIR: the-fortune-of-souls
+  APPLICATION_NAME: TFoS
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            export_name: TFoS.x86_64
+            artifact_path: bin/Linux/TFoS.x86_64
+          - os: macos-latest
+            platform: mac
+            export_name: TFoS.dmg
+            artifact_path: bin/Mac/TFoS.dmg
+          - os: windows-latest
+            platform: windows
+            export_name: TFoS.exe
+            artifact_path: bin/Windows/TFoS.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set environment variables
+        shell: bash
+        run: |
+          echo "BUILD_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          echo "BUILD_TIME=$(date +'%H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Download Godot Editor (Linux)
+        if: matrix.platform == 'linux'
+        run: |
+          curl -L -o godot.zip https://github.com/godotengine/godot-builds/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_linux.x86_64.zip
+          unzip -a godot.zip
+          rm godot.zip
+          chmod +x Godot_v${{ env.GODOT_VERSION }}-stable_linux.x86_64
+
+      - name: Download Godot Editor (macOS)
+        if: matrix.platform == 'mac'
+        run: |
+          curl -L -o godot.zip https://github.com/godotengine/godot-builds/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_macos.universal.zip
+          unzip -a godot.zip
+          rm godot.zip
+          chmod +x Godot.app/Contents/MacOS/Godot
+
+      - name: Download Godot Editor (Windows)
+        if: matrix.platform == 'windows'
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/godotengine/godot-builds/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_win64.exe.zip" -OutFile "godot.zip"
+          Expand-Archive godot.zip -DestinationPath .
+          Remove-Item godot.zip
+
+      - name: Download export templates
+        shell: bash
+        run: |
+          curl -L -o templates.tpz https://github.com/godotengine/godot-builds/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable
+          unzip -a templates.tpz -d ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable
+          mv ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable/templates/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable/
+          rm templates.tpz
+
+      - name: Create export presets
+        shell: bash
+        run: |
+          mkdir -p ${{ env.GODOT_PROJECT_DIR }}/export_presets_files
+          cd ${{ env.GODOT_PROJECT_DIR }}
+
+      - name: Export Debug for Linux
+        if: matrix.platform == 'linux' && (github.event.inputs.build_mode == 'debug' || github.event.inputs.build_mode == 'all')
+        shell: bash
+        run: |
+          export_path="${{ env.GODOT_PROJECT_DIR }}/bin/Linux/${{ matrix.export_name }}"
+          mkdir -p $(dirname "$export_path")
+          ./Godot_v${{ env.GODOT_VERSION }}-stable_linux.x86_64 --headless --export-debug "Linux" "$export_path"
+
+      - name: Export Release for Linux
+        if: matrix.platform == 'linux' && (github.event.inputs.build_mode == 'release' || github.event.inputs.build_mode == 'all')
+        shell: bash
+        run: |
+          export_path="${{ env.GODOT_PROJECT_DIR }}/bin/Linux/${{ matrix.export_name }}"
+          mkdir -p $(dirname "$export_path")
+          ./Godot_v${{ env.GODOT_VERSION }}-stable_linux.x86_64 --headless --export-release "Linux" "$export_path"
+
+      - name: Export Debug for macOS
+        if: matrix.platform == 'mac' && (github.event.inputs.build_mode == 'debug' || github.event.inputs.build_mode == 'all')
+        shell: bash
+        run: |
+          export_path="${{ env.GODOT_PROJECT_DIR }}/bin/Mac/${{ matrix.export_name }}"
+          mkdir -p $(dirname "$export_path")
+          ./Godot.app/Contents/MacOS/Godot --headless --export-debug "macOS" "$export_path"
+
+      - name: Export Release for macOS
+        if: matrix.platform == 'mac' && (github.event.inputs.build_mode == 'release' || github.event.inputs.build_mode == 'all')
+        shell: bash
+        run: |
+          export_path="${{ env.GODOT_PROJECT_DIR }}/bin/Mac/${{ matrix.export_name }}"
+          mkdir -p $(dirname "$export_path")
+          ./Godot.app/Contents/MacOS/Godot --headless --export-release "macOS" "$export_path"
+
+      - name: Export Debug for Windows
+        if: matrix.platform == 'windows' && (github.event.inputs.build_mode == 'debug' || github.event.inputs.build_mode == 'all')
+        shell: powershell
+        run: |
+          $export_path = "${{ env.GODOT_PROJECT_DIR }}/bin/Windows/${{ matrix.export_name }}"
+          New-Item -ItemType Directory -Path (Split-Path $export_path) -Force
+          .\Godot_v${{ env.GODOT_VERSION }}-stable_win64.exe --headless --export-debug "Windows" "$export_path"
+
+      - name: Export Release for Windows
+        if: matrix.platform == 'windows' && (github.event.inputs.build_mode == 'release' || github.event.inputs.build_mode == 'all')
+        shell: powershell
+        run: |
+          $export_path = "${{ env.GODOT_PROJECT_DIR }}/bin/Windows/${{ matrix.export_name }}"
+          New-Item -ItemType Directory -Path (Split-Path $export_path) -Force
+          .\Godot_v${{ env.GODOT_VERSION }}-stable_win64.exe --headless --export-release "Windows" "$export_path"
+
+      - name: Zip Linux artifacts
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          cd ${{ env.GODOT_PROJECT_DIR }}/bin
+          zip -r TFoS-Linux-Release-${{ env.BUILD_DATE }}.zip Linux/
+          mv TFoS-Linux-Release-${{ env.BUILD_DATE }}.zip ../
+
+      - name: Upload Linux artifacts
+        if: matrix.platform == 'linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TFoS-Linux-Release-${{ env.BUILD_DATE }}
+          path: ${{ env.GODOT_PROJECT_DIR }}/TFoS-Linux-Release-${{ env.BUILD_DATE }}.zip
+
+      - name: Zip macOS artifacts
+        if: matrix.platform == 'mac'
+        shell: bash
+        run: |
+          cd ${{ env.GODOT_PROJECT_DIR }}/bin
+          zip -r TFoS-macOS-Release-${{ env.BUILD_DATE }}.zip Mac/
+          mv TFoS-macOS-Release-${{ env.BUILD_DATE }}.zip ../
+
+      - name: Upload macOS artifacts
+        if: matrix.platform == 'mac'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TFoS-macOS-Release-${{ env.BUILD_DATE }}
+          path: ${{ env.GODOT_PROJECT_DIR }}/TFoS-macOS-Release-${{ env.BUILD_DATE }}.zip
+
+      - name: Zip Windows artifacts
+        if: matrix.platform == 'windows'
+        shell: powershell
+        run: |
+          cd ${{ env.GODOT_PROJECT_DIR }}\bin
+          Compress-Archive -Path Windows -DestinationPath TFoS-Windows-Release-${{ env.BUILD_DATE }}.zip
+          Move-Item TFoS-Windows-Release-${{ env.BUILD_DATE }}.zip ..
+
+      - name: Upload Windows artifacts
+        if: matrix.platform == 'windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TFoS-Windows-Release-${{ env.BUILD_DATE }}
+          path: ${{ env.GODOT_PROJECT_DIR }}/TFoS-Windows-Release-${{ env.BUILD_DATE }}.zip
+
