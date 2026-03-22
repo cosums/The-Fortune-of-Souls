@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://dbq4ucd4q822y"]
+
+[ext_resource type="Script" uid="uid://df6c7d738rj2w" path="res://scripts/ReadingsBook.cs" id="1_vv8fk"]
+[ext_resource type="Texture2D" uid="uid://crpk31672dlkh" path="res://art/programmer/refbook/page_blank.png" id="2_slurq"]
+[ext_resource type="Texture2D" uid="uid://c0pvgvbgsqgiv" path="res://art/programmer/crystalball/ballsymbol1.png" id="3_674f0"]
+[ext_resource type="Texture2D" uid="uid://dn8acclpev1yb" path="res://art/programmer/crystalball/ballsymbol2.png" id="4_xpsg3"]
+
+[node name="ReadingsBook" type="Control" unique_id=775498353]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vv8fk")
+
+[node name="Panel" type="Panel" parent="." unique_id=1244902690]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -326.0
+offset_right = 576.0
+offset_bottom = 326.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PageBlank" type="Sprite2D" parent="Panel" unique_id=1719291815]
+texture_filter = 1
+position = Vector2(577.5, 324.75)
+scale = Vector2(4.795833, 4.7444444)
+texture = ExtResource("2_slurq")
+
+[node name="RightPage" type="Sprite2D" parent="Panel" unique_id=162115577]
+texture_filter = 1
+position = Vector2(300, 300)
+scale = Vector2(10, 10)
+texture = ExtResource("3_674f0")
+
+[node name="LeftPage" type="Sprite2D" parent="Panel" unique_id=533312550]
+texture_filter = 1
+position = Vector2(800, 300)
+scale = Vector2(10, 10)
+texture = ExtResource("4_xpsg3")
+
+[node name="LeftText" type="RichTextLabel" parent="Panel" unique_id=247348587]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.083000004
+anchor_top = 0.739
+anchor_right = 0.47100002
+anchor_bottom = 0.90500003
+offset_left = -11.616005
+offset_top = -3.828003
+offset_right = -8.592041
+offset_bottom = -12.059998
+text = "SampleText"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightText" type="RichTextLabel" parent="Panel" unique_id=1771055183]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.546
+anchor_top = 0.74500006
+anchor_right = 0.88100004
+anchor_bottom = 0.86600006
+offset_left = 14.007996
+offset_top = -17.740051
+offset_right = -11.912048
+offset_bottom = 14.367981
+text = "SampleText
+"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
