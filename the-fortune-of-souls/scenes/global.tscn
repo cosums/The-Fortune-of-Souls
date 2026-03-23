@@ -1,8 +1,15 @@
 [gd_scene format=3 uid="uid://dfxqrq1dvrnk0"]
 
 [ext_resource type="Script" uid="uid://c6qksd878n7il" path="res://scripts/ReputationTracker.cs" id="1_4pk28"]
+[ext_resource type="PackedScene" uid="uid://c77v00biwa2np" path="res://scenes/crystal_game.tscn" id="2_opebo"]
+[ext_resource type="PackedScene" uid="uid://dbq4ucd4q822y" path="res://scenes/readings_book.tscn" id="3_m3l3d"]
 
 [node name="Global" type="Node" unique_id=1633946412]
 
 [node name="Reputation Tracker" type="Node" parent="." unique_id=1094890123]
 script = ExtResource("1_4pk28")
+
+[node name="CrystalGame" parent="." unique_id=153489280 instance=ExtResource("2_opebo")]
+position = Vector2(1682.7986, 579.00037)
+
+[node name="ReadingsBook" parent="." unique_id=775498353 instance=ExtResource("3_m3l3d")]
