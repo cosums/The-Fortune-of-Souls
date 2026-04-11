@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://cul4v1ekhovrg"]
+
+[ext_resource type="Texture2D" uid="uid://tcb63xfpnr82" path="res://art/characters/face painter/profile/facepainterprofile_giggle.png" id="1_a50ax"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x8di4"]
+bg_color = Color(0.11415806, 0.11415812, 0.11415801, 1)
+
+[sub_resource type="Theme" id="Theme_a50ax"]
+default_font_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmkng"]
+bg_color = Color(0.20942885, 0.2094289, 0.20942876, 1)
+
+[node name="DialogueBubble" type="Control" unique_id=1310821060]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dialogue Panel" type="Panel" parent="." unique_id=535139961]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -154.0
+offset_top = -57.0
+offset_right = 154.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_x8di4")
+
+[node name="Dialogue" type="RichTextLabel" parent="Dialogue Panel" unique_id=1605962641]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_a50ax")
+text = "This is a bunch of testing text!"
+
+[node name="Portrait Background" type="Panel" parent="." unique_id=1089322727]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -56.0
+offset_top = 6.0
+offset_right = 56.0
+offset_bottom = 118.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xmkng")
+
+[node name="TextureRect" type="TextureRect" parent="Portrait Background" unique_id=971257674]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_a50ax")
+expand_mode = 1

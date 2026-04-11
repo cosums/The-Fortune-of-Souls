@@ -1,9 +1,32 @@
 [gd_scene format=3 uid="uid://c00pbpitqflg4"]
 
 [ext_resource type="Texture2D" uid="uid://dtstphqu2er8a" path="res://art/characters/fortune teller/fortunetellerdraft1.png" id="1_738b3"]
+[ext_resource type="Script" uid="uid://b2ndcnmng23rm" path="res://scripts/PlayerController.cs" id="2_imq1e"]
+[ext_resource type="Texture2D" uid="uid://b5nps8ha5lafi" path="res://art/characters/face painter/sprites/facepainteridle.png" id="2_nr0lv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_imq1e"]
+size = Vector2(16, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nr0lv"]
+size = Vector2(16, 32)
 
 [node name="DialogueTesting" type="Node2D" unique_id=1905441366]
 
-[node name="Fortunetellerdraft1" type="Sprite2D" parent="." unique_id=500386088]
-position = Vector2(150, 97)
+[node name="Face Painter" type="StaticBody2D" parent="." unique_id=774753023]
+position = Vector2(73, 60)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Face Painter" unique_id=2052737140]
+shape = SubResource("RectangleShape2D_imq1e")
+
+[node name="Facepainteridle" type="Sprite2D" parent="Face Painter" unique_id=1676779609]
+texture = ExtResource("2_nr0lv")
+
+[node name="Player Test" type="CharacterBody2D" parent="." unique_id=394293249]
+position = Vector2(129, 62)
+script = ExtResource("2_imq1e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player Test" unique_id=1933095582]
+shape = SubResource("RectangleShape2D_nr0lv")
+
+[node name="Test Player" type="Sprite2D" parent="Player Test" unique_id=500386088]
 texture = ExtResource("1_738b3")
