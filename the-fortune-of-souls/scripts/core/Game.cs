@@ -5,6 +5,9 @@ public partial class Game : Node
 {
     public static Game Instance { get; private set;}
 
+    public enum GameState {Play, Dialogue, Paused};
+    public GameState State = GameState.Play;
+
     public override void _Ready()
     {
         if (Instance != null)

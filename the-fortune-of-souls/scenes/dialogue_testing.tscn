@@ -1,21 +1,29 @@
 [gd_scene format=3 uid="uid://c00pbpitqflg4"]
 
 [ext_resource type="Texture2D" uid="uid://dtstphqu2er8a" path="res://art/characters/fortune teller/fortunetellerdraft1.png" id="1_738b3"]
+[ext_resource type="Script" uid="uid://bqgc3fmc8ynke" path="res://scripts/NPCDialogue.cs" id="1_kjl0j"]
 [ext_resource type="Script" uid="uid://b2ndcnmng23rm" path="res://scripts/PlayerController.cs" id="2_imq1e"]
 [ext_resource type="Texture2D" uid="uid://b5nps8ha5lafi" path="res://art/characters/face painter/sprites/facepainteridle.png" id="2_nr0lv"]
+[ext_resource type="Resource" uid="uid://dfq6qcfli42au" path="res://dialogues/test_dialogue.dialogue" id="3_c7vrk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_imq1e"]
-size = Vector2(16, 32)
+size = Vector2(16, 12)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nr0lv"]
-size = Vector2(16, 32)
+size = Vector2(16, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c7vrk"]
+size = Vector2(10, 10)
 
 [node name="DialogueTesting" type="Node2D" unique_id=1905441366]
 
 [node name="Face Painter" type="StaticBody2D" parent="." unique_id=774753023]
 position = Vector2(73, 60)
+script = ExtResource("1_kjl0j")
+dialogue = ExtResource("3_c7vrk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Face Painter" unique_id=2052737140]
+position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_imq1e")
 
 [node name="Facepainteridle" type="Sprite2D" parent="Face Painter" unique_id=1676779609]
@@ -25,8 +33,18 @@ texture = ExtResource("2_nr0lv")
 position = Vector2(129, 62)
 script = ExtResource("2_imq1e")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player Test" unique_id=1933095582]
+[node name="Collider" type="CollisionShape2D" parent="Player Test" unique_id=1933095582]
+position = Vector2(0, 9.5)
 shape = SubResource("RectangleShape2D_nr0lv")
 
 [node name="Test Player" type="Sprite2D" parent="Player Test" unique_id=500386088]
 texture = ExtResource("1_738b3")
+
+[node name="Interactor Anchor" type="Node2D" parent="Player Test" unique_id=9868096]
+position = Vector2(0, 10)
+
+[node name="Interactor" type="Area2D" parent="Player Test/Interactor Anchor" unique_id=27429929]
+position = Vector2(-13, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player Test/Interactor Anchor/Interactor" unique_id=1751425224]
+shape = SubResource("RectangleShape2D_c7vrk")

@@ -1,11 +1,12 @@
 ~ start
-Nathan: [[Hi|Hello|Howdy]], this is some dialogue.
-Nathan: Here are some choices.
+Face Painter: [[Hi|Hello|Howdy]], this is some dialogue.
+Face Painter: [wave]This is wavy[/wave]
+Face Painter: Here are some choices.
 - First one
-	Nathan: You picked the first one.
+	Face Painter: You picked the first one.
 - Second one
-	Nathan: You picked the second one.
+	Face Painter: You picked the second one.
 - Start again => start
 - End the conversation => END
-Nathan: For more information see the online documentation.
+Face Painter: For more information see the online documentation.
 => END

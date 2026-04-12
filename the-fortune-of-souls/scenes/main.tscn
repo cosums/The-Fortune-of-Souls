@@ -4,6 +4,7 @@
 
 [node name="Main" type="Node" unique_id=1642545789]
 script = ExtResource("1_o5qli")
+testScenePath = "uid://c00pbpitqflg4"
 
 [node name="Control" type="Control" parent="." unique_id=204463480]
 layout_mode = 3
